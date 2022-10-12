@@ -1,0 +1,36 @@
+--Queries for Tableau project--
+
+
+--1) Global Numbers
+
+select sum(new_cases) as total_cases , sum(new_deaths) as total_deaths , (sum(new_deaths)/sum(new_cases))*100 as death_percentage
+from covid.covid_deaths
+where continent is not null
+order by 1,2;
+
+--2)death count in continents
+select continent,sum(new_deaths) as total_deathcount
+from covid.covid_deaths
+where continent is not null
+group by continent
+order by total_deathcount desc;
+
+
+
+--3) countries with highest infection rate compared to popultaion
+
+select location,population,max(total_cases) as highest_infectedcount, max((total_cases/population))*100 as percent_population_infected
+from covid.covid_deaths
+where continent is not null
+group by location, population
+order by percent_population_infected desc;
+
+
+--4)include date in above query
+
+select location,population,date, max(total_cases) as highest_infectedcount, max((total_cases/population))*100 as percent_population_infected
+from covid.covid_deaths
+where continent is not null
+group by location, population,date
+order by percent_population_infected desc;
+
